@@ -57,7 +57,7 @@
 #pragma mark -
 - (id)objectAtIndex:(NSInteger)index ofPage:(NSInteger)aPageNumber{        
     aPageNumber--;
-    if(index < 0 || index > self.queryOptions.limit && self.queryOptions.limit != 0)
+    if(index < 0 || (index > self.queryOptions.limit && self.queryOptions.limit != 0))
         return nil;
     // decrement the index to account for the fact that rows are stored in an NSArray that is 0th based. 
     //index--;

@@ -78,7 +78,6 @@
         if([aDictionaryKey isEqualToString:@"_id"] || [aDictionaryKey isEqualToString:@"_id"]){
             continue;
         }
-        
         id aDictionaryValue = [aDictionary objectForKey:aDictionaryKey];
         
         // Conversion of NSDictionary

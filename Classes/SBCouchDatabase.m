@@ -79,7 +79,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -(NSEnumerator*) getViewEnumerator:(NSString*)viewId{
     //NSString *url = [self constructURL:viewId withRevisionCount:NO andInfo:NO revision:nil];
     
-    SBCouchView *view = [[SBCouchView alloc] initWithName:viewId];
+    SBCouchView *view = [[SBCouchView alloc] initWithName:viewId couchDatabase:self];
     SBCouchEnumerator *enumerator = [[[SBCouchEnumerator alloc] initWithView:view] autorelease];
     return (NSEnumerator*)enumerator;    
 }
@@ -138,7 +138,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSDictionary*)get:(NSString*)args
 {
     //assert(self.name);
-    NSString *urlString = [NSString stringWithFormat:@"http://%@:%u/%@/%@", couchServer.host, couchServer.port, self.name, args];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/%@", couchServer.host, couchServer.port, self.name, args];
 
     NSString *encodedString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
@@ -221,9 +221,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     NSString *urlString;
     if(view.queryOptions)
-        urlString = [NSString stringWithFormat:@"http://%@:%u/%@/%@?%@", couchServer.host, couchServer.port, self.name, @"_temp_view", [view.queryOptions queryString]];
+        urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/%@?%@", couchServer.host, couchServer.port, self.name, @"_temp_view", [view.queryOptions queryString]];
     else
-        urlString = [NSString stringWithFormat:@"http://%@:%u/%@/%@", couchServer.host, couchServer.port, self.name, @"_temp_view"];
+        urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/%@", couchServer.host, couchServer.port, self.name, @"_temp_view"];
 
     
     NSString *encodedURL = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -245,11 +245,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     SBDebug(@"headers %@", [[response allHeaderFields] JSONString]);
     
     if (200 == [response statusCode]) {
-        NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-        // The following makes no sense in this context as there is no 'ok' value 
-        // in the dictionary.
-        //return [[SBCouchResponse alloc] initWithDictionary:[json JSONValue]];
-        return [json JSONValue];
+        return (NSDictionary*)[JSONDecoder.new objectWithData:data];
     }else{
         SBDebug(@"HTTP POST FAILED:  %@",  encodedURL  );
         SBDebug(@"        STATUS CODE %i",  [response statusCode]);
@@ -267,8 +263,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 - (SBCouchResponse*)postDocument:(NSDictionary*)doc
 {
-    NSData *body = [[doc JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *urlString = [NSString stringWithFormat:@"http://%@:%u/%@/", couchServer.host, couchServer.port, self.name];
+    NSData *body = [[doc JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/", couchServer.host, couchServer.port, self.name];
     NSURL *url = [NSURL URLWithString:urlString];    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];    
     [request setHTTPBody:body];
@@ -282,7 +278,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     if (201 == [response statusCode]) {
         NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-        return [[[SBCouchResponse alloc] initWithDictionary:[json JSONValue]] autorelease];
+        return [[[SBCouchResponse alloc] initWithDictionary:[json JSONValue] ] autorelease];
     }else{
         SBDebug(@"HTTP POST FAILED:  %@",  urlString );
         SBDebug(@"        STATUS CODE %i",  [response statusCode]);
@@ -297,8 +293,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 - (SBCouchResponse*)putDocument:(NSDictionary*)doc named:(NSString*)x
 {
-    NSData *body = [[doc JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *urlString = [NSString stringWithFormat:@"http://%@:%u/%@/%@", couchServer.host, couchServer.port, self.name, x];
+    NSData *body = [[doc JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/%@", couchServer.host, couchServer.port, self.name, x];
     NSURL *url = [NSURL URLWithString:urlString];    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];    
     [request setHTTPBody:body];
@@ -325,11 +321,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (SBCouchResponse*)putDocument:(SBCouchDocument*)couchDocument
 {
     
-    NSData *body = [[couchDocument JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *urlString = [NSString stringWithFormat:@"http://%@:%u/%@/%@", couchServer.host, couchServer.port, self.name, [couchDocument identity]];
+    NSData *body = [[couchDocument JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/%@", couchServer.host, couchServer.port, self.name, [couchDocument identity]];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];    
     SBDebug(@"%@", urlString);
-    SBDebug(@"%@", [couchDocument JSONRepresentation]);
+    SBDebug(@"%@", [couchDocument JSONString]);
     
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];    
@@ -388,7 +384,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 - (SBCouchResponse*)deleteDocument:(NSDictionary*)doc
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://%@:%u/%@/%@?rev=%@", couchServer.host, couchServer.port, self.name, doc.name, doc.rev];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@:%lu/%@/%@?rev=%@", couchServer.host, couchServer.port, self.name, doc.name, doc.rev];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];    
     [request setHTTPMethod:@"DELETE"];
@@ -425,10 +421,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 -(NSString*)urlString{
-    return [NSString stringWithFormat:@"http://%@:%u/%@", couchServer.host, couchServer.port, self.name];
+    return [NSString stringWithFormat:@"http://%@:%lu/%@", couchServer.host, couchServer.port, self.name];
 }
 
 -(NSString*)description{
-    return [NSString stringWithFormat:@"http://%@:%u/%@", couchServer.host, couchServer.port, self.name];
+    return [NSString stringWithFormat:@"http://%@:%lu/%@", couchServer.host, couchServer.port, self.name];
 }
 @end

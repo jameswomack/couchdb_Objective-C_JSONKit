@@ -26,4 +26,6 @@
 /// The new revision id.
 @property (readonly) NSString* rev;
 
+- (id)initWithDictionary:(NSDictionary*)x;
+
 @end

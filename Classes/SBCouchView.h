@@ -13,7 +13,7 @@
 
 @class SBCouchDatabase;
 
-@interface SBCouchView : SBOrderedDictionary{
+@interface SBCouchView : SBOrderedDictionary {
     NSString            *name;
     SBCouchDatabase     *couchDatabase;
     NSString            *identity;

@@ -60,7 +60,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSString*)version
 {
-    NSString *server = [NSString stringWithFormat:@"http://%@:%u", self.host, self.port];
+    NSString *server = [NSString stringWithFormat:@"http://%@:%lu", self.host, self.port];
     NSURL *url = [NSURL URLWithString:server];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 
@@ -83,7 +83,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (BOOL)createDatabase:(NSString*)db
 {
     NSString *escaped = [db stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *server = [NSString stringWithFormat:@"http://%@:%u/%@", self.host, self.port, escaped];
+    NSString *server = [NSString stringWithFormat:@"http://%@:%lu/%@", self.host, self.port, escaped];
     NSURL *url = [NSURL URLWithString:server];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -101,7 +101,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (BOOL)deleteDatabase:(NSString*)db
 {
     NSString *escaped = [db stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *server = [NSString stringWithFormat:@"http://%@:%u/%@", self.host, self.port, escaped];
+    NSString *server = [NSString stringWithFormat:@"http://%@:%lu/%@", self.host, self.port, escaped];
     NSURL *url = [NSURL URLWithString:server];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -119,7 +119,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSArray*)listDatabases
 {
-    NSString *server = [NSString stringWithFormat:@"http://%@:%u/_all_dbs", self.host, self.port];
+    NSString *server = [NSString stringWithFormat:@"http://%@:%lu/_all_dbs", self.host, self.port];
     NSURL *url = [NSURL URLWithString:server];    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -144,11 +144,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -(NSString*)serverURLAsString
 {
-    return [NSString stringWithFormat:@"http://%@:%u", self.host, self.port];  
+    return [NSString stringWithFormat:@"http://%@:%lu", self.host, self.port];
 }
 
 -(NSString*)name{
-    return [NSString stringWithFormat:@"%@:%u", self.host, self.port];  
+    return [NSString stringWithFormat:@"%@:%lu", self.host, self.port];  
 }
 
 @end
