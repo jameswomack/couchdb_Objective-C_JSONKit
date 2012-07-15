@@ -2,3 +2,14 @@
 build/
 vendor/JSON/build/
 CouchObjC.xcodeproj/robevans.pbxuser
+
+Pods/*
+
+DerivedData/*
+Foundation.h.pth
+
+CouchObjC.xcodeproj/project.xcworkspace/xcuserdata/*
+
+CouchObjC.xcodeproj/xcuserdata/*
+
+CouchObjC.xcodeproj/project.xcworkspace/contents.xcworkspacedata

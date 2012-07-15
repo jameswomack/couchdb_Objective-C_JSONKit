@@ -1,0 +1,7 @@
+PODS:
+  - JSONKit (1.4)
+  - Reachability (3.0.0)
+
+DEPENDENCIES:
+  - JSONKit
+  - Reachability

@@ -8,7 +8,7 @@
 
 #import "SBCouchView.h"
 #import "CouchObjC.h"
-#import <JSON/JSON.h>
+#import <JSONKit.h>
 
 @implementation SBCouchView
 
@@ -87,7 +87,7 @@
 }
 
 -(NSString*)description{
-    return [self JSONRepresentation];
+    return [self JSONString];
 }
 
 - (NSEnumerator*) slowViewEnumerator{

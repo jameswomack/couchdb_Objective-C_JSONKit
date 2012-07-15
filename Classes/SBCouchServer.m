@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "SBCouchServer.h"
 #import "SBCouchDatabase.h"
 #import "CouchObjC.h"
-#import <JSON/JSON.h>
+#import <JSONKit.h>
 
 @implementation SBCouchServer
 

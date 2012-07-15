@@ -61,7 +61,7 @@ static NSString *DOC_REV     = @"1";
 
 -(void)testJSONCapabilities{
     
-    NSString *json = [couchDocument JSONRepresentation];
+    NSString *json = [couchDocument JSONString];
     STAssertNotNil(json, @"CouchDocument not responding to request");
     SBDebug(@"json => %@", json);
     // XXX This is terribly hard to read; all those damn escapes. Can we do better?

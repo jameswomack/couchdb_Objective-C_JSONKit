@@ -103,7 +103,7 @@ static NSString *VIEW_3           = @"wonderousThings";
     id views = [designDocument views];
     STAssertNotNil(views, nil);
     
-    NSString *v = [designDocument JSONRepresentation];
+    NSString *v = [designDocument JSONString];
     NSDictionary *dict = [v JSONValue];
     STAssertNotNil(dict, nil);
     SBCouchDesignDocument *newDesignDoc = [[SBCouchDesignDocument alloc] initWithDictionary:dict];

@@ -7,9 +7,8 @@
 //
 
 #import "SBCouchDocument.h"
-#import <JSON/JSON.h>
 #import "SBOrderedDictionary.h"
-#import "SBCouchServer.h";
+#import "SBCouchServer.h"
 #import "SBCouchDatabase.h"
 #import "CouchObjC.h"
 
@@ -161,7 +160,7 @@
 }
 
 - (NSString *)description{
-    NSString *dictionaryDiscription = [self JSONRepresentation];
+    NSString *dictionaryDiscription = [self JSONString];
     NSMutableString *description = [NSMutableString stringWithString:dictionaryDiscription];
     SBCouchServer *server = [self.couchDatabase couchServer];
     

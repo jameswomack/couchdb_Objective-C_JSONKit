@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "NSDictionary+CouchObjC.h"
 #import "SBCouchDocument.h"
 
-#import <JSON/JSON.h>
+#import <JSONKit.h>
 #import "CouchObjC.h"
 
 @interface SBCouchDatabase (Private)
@@ -155,8 +155,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     SBDebug(@" URL Status Code %i", [response statusCode]);
     if (200 == [response statusCode]) {
-        NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-        return [json JSONValue];
+        return (NSDictionary*)[JSONDecoder.new objectWithData:data];
     }else{
         SBDebug(@"HTTP GET FAILED:  %@",  encodedString );
         SBDebug(@"        STATUS CODE %i",  [response statusCode]);
@@ -217,7 +216,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSDictionary*)runSlowView:(SBCouchView*)view{    
     //[NSString stringWithFormat:@"", COUCH_VIEW_SLOW, view]
     //return [self postDocument:view];
-    NSString *tempView = [view JSONRepresentation];
+    NSString *tempView = [view JSONString];
     NSData *body = [tempView dataUsingEncoding:NSUTF8StringEncoding];
     
     NSString *urlString;
@@ -243,7 +242,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                          returningResponse:&response
                                                      error:&error];
     SBDebug(@"status code %i", [response statusCode]);
-    SBDebug(@"headers %@", [[response allHeaderFields] JSONRepresentation]);
+    SBDebug(@"headers %@", [[response allHeaderFields] JSONString]);
     
     if (200 == [response statusCode]) {
         NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];

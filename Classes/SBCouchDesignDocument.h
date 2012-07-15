@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "SBCouchDocument.h"
 #import "SBCouchView.h"
-#import <JSON/JSON.h>
+#import <JSONKit.h>
 
 /*!
  Couple a facts about couchDB are important to understand when working with this class. 

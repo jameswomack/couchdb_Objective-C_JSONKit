@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <JSON/JSON.h>
+#import <JSONKit.h>
 #import "SBOrderedDictionary.h"
 #import "SBCouchQueryOptions.h"
 
