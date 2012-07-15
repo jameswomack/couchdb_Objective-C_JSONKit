@@ -629,7 +629,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "/Users/robevans/Projects/cocoa/couchobj/build/Debug/CouchObjC.framework/Versions/A/Frameworks @exectuable_path/../Frameworks @loader_path/../Frameworks @exectuable_path/Versions/A/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -648,7 +648,7 @@
 				);
 				LD_RUNPATH_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
